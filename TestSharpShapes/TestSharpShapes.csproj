@@ -51,6 +51,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Rectangle.cs" />
+    <Compile Include="UnitTestRectangles.cs" />
     <Compile Include="UnitTestShape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
