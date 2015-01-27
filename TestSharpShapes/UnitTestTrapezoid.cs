@@ -14,8 +14,36 @@ namespace TestSharpShapes
             Assert.AreEqual(5, trap.Base1);
             Assert.AreEqual(8, trap.Base2);
             Assert.AreEqual(2, trap.Altitude);
+            Assert.AreEqual(60, trap.AcuteAngle);
+            Assert.AreEqual(120, trap.ObtuseAngle);
             
         }
+
+        [TestMethod]
+        public void TestTrapezoidCalculatesAngle()
+        {
+            Trapezoid trap = new Trapezoid (20, 15, 2);
+            Assert.AreEqual((decimal) 38.66, trap.AcuteAngle);
+            Assert.AreEqual((decimal) 141.34, trap.ObtuseAngle);
+ 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TrapezoidConstructorChecksBaseLenghts()
+        {
+            new Trapezoid(15, 20, 2);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TrapezoidConstructorChecksTopLenghts()
+        {
+            new Trapezoid(15, 20, 2);
+        }
+
+
+
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void TestSanityCheckB2()
@@ -152,6 +180,14 @@ namespace TestSharpShapes
         //    Assert.AreEqual(16.61, trap.Area());
 
         //}
+
+        [TestMethod]
+        public void TestTrapezoidDefaultColors()
+        {
+            Trapezoid shape = new Trapezoid(10, 20, 4);
+            Assert.AreEqual(System.Drawing.Color.Bisque, shape.FillColor);
+            Assert.AreEqual(System.Drawing.Color.Tomato, shape.BorderColor);
+        }
 
 
     }

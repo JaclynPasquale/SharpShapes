@@ -22,6 +22,10 @@ namespace SharpShapes
         {
             get { return this.altitude;  }
         }
+
+        public object AcuteAngle { get ; set; }
+        public object ObtuseAngle { get; set; }
+     
         public override int SidesCount
         {
             get { return 4; }
@@ -52,5 +56,7 @@ namespace SharpShapes
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

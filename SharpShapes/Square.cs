@@ -6,7 +6,6 @@ using System.Text;
 namespace SharpShapes
 {
      
-
     public class Square : Rectangle 
     {
         private decimal width;
