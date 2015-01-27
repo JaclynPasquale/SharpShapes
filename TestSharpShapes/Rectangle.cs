@@ -7,6 +7,7 @@ namespace SharpShapes
 {
     public class Rectangle : Shape
     {
+
         private decimal width;
         public decimal Width
         {
