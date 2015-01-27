@@ -7,46 +7,38 @@ namespace SharpShapes
 {
     public class Trapezoid : Shape
     {
-        private decimal base1;
-        public decimal Base1
-        {
-            get { return this.base1; }
-        }
-        private decimal base2;
-        public decimal Base2
-        {
-            get { return this.base2; }
-        }
-        private decimal altitude;
-        public decimal Altitude
-        {
-            get { return this.altitude;  }
-        }
+        public decimal LongBase { get; private set; }
+        public decimal ShortBase { get; private set; }
+        public decimal Height { get; private set; }
+        public decimal AcuteAngle { get; set; }
+        public decimal ObtuseAngle { get; set; }
 
-        public object AcuteAngle { get ; set; }
-        public object ObtuseAngle { get; set; }
-     
-        public override int SidesCount
+        public Trapezoid(int longBase, int shortBase, int height)
         {
-            get { return 4; }
-
-        }
-
-
-        public Trapezoid(int base1, int base2, int altitude)
-        {
-            if (base1 <= 0 || base2 <= 0 || altitude <= 0)
+            if (height <= 0 || shortBase <= 0 || longBase <= 0 || shortBase >= longBase)
             {
                 throw new ArgumentException();
             }
-            this.base1 = base1;
-            this.base2 = base2;
-            this.altitude = altitude;
+
+            this.LongBase = longBase;
+            this.ShortBase = shortBase;
+            this.Height = height;
+
+            decimal wingLength = (LongBase - ShortBase) / 2;
+            this.AcuteAngle = Decimal.Round((decimal)(Math.Atan((double)(height / wingLength)) * (180.0 / Math.PI)), 2);
+
+            this.ObtuseAngle = 180 - AcuteAngle;
+        }
+
+        public override int SidesCount
+        {
+            get { return 4; }
         }
 
         public override decimal Area()
         {
-            throw new NotImplementedException();
+            return (LongBase + ShortBase) / 2 * Height;
+           
         }
         public override decimal Perimeter()
         {
@@ -54,7 +46,13 @@ namespace SharpShapes
         }
         public override void Scale(int percent)
         {
-            throw new NotImplementedException();
+            if (percent <= 0)
+            {
+                throw new ArgumentException();
+            }
+            this.LongBase = LongBase * percent / 100;
+            this.ShortBase = ShortBase * percent / 100;
+            this.Height = Height * percent / 100;
         }
 
        
