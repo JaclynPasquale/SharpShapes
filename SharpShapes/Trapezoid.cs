@@ -24,11 +24,17 @@ namespace SharpShapes
             this.ShortBase = shortBase;
             this.Height = height;
 
-            decimal wingLength = (LongBase - ShortBase) / 2;
+            decimal wingLength = WingLength();
             this.AcuteAngle = Decimal.Round((decimal)(Math.Atan((double)(height / wingLength)) * (180.0 / Math.PI)), 2);
 
             this.ObtuseAngle = 180 - AcuteAngle;
         }
+
+        private decimal WingLength()
+        {
+            return (LongBase - ShortBase) / 2;
+        }
+
 
         public override int SidesCount
         {
@@ -42,7 +48,9 @@ namespace SharpShapes
         }
         public override decimal Perimeter()
         {
-            throw new NotImplementedException();
+            double squares = (double)(WingLength() * WingLength() + Height * Height);
+            decimal legLength = Decimal.Round((decimal)Math.Sqrt(squares), 2);
+            return LongBase + ShortBase + 2 * legLength;
         }
         public override void Scale(int percent)
         {
