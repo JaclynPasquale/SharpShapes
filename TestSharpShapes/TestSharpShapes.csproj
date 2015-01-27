@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Square.cs" />
     <Compile Include="Rectangle.cs" />
+    <Compile Include="UnitTestTrapezoid.cs" />
     <Compile Include="UnitTestSquare.cs" />
     <Compile Include="UnitTestRectangles.cs" />
     <Compile Include="UnitTestShape.cs" />
