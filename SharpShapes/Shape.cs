@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Controls;
 
 namespace SharpShapes
 {
@@ -25,6 +26,15 @@ namespace SharpShapes
         /// the number of sides of this shape.
         /// </summary>
         abstract public int SidesCount { get; }
+
+        /// <summary>
+        /// Creates a polygon representing this shape and adds it to the shapecanvas
+        /// </summary>
+        /// <param name="ShapeCanvas"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        abstract public void DrawOnto(Canvas ShapeCanvas, int x, int y);
+     
 
         public Shape()
         {
@@ -49,6 +59,9 @@ namespace SharpShapes
         /// </summary>
         /// <param name="percent"> the percentage by which to scale the shape</param>
         abstract public void Scale(int percent);
+
+        
+        
 
     }
 }

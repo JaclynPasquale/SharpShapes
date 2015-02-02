@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Reflection;
+using System.Windows.Media;
 using SharpShapes;
-using System.Drawing;
 
 
 namespace GrapeShapes
@@ -27,12 +19,12 @@ namespace GrapeShapes
         {
             InitializeComponent();
             PopulateClassList();
-            DrawRectangle();
-            DrawSquare(1, 50, new Square(30));
+            
+            
             Square square = new Square(200);
             square.FillColor = System.Drawing.Color.Green;
             square.BorderColor = System.Drawing.Color.Red;
-            DrawSquare(50, 5, square);
+            
             
         }
 
@@ -53,15 +45,21 @@ namespace GrapeShapes
 
          public static int ArgumentCountFor(string className)
         {
-            Type classType = Assembly.GetAssembly(typeof(Shape)).GetTypes().Where( shapeType => shapeType.Name == className).First();
+            Type classType = GetShapeTypeOf(className);
             ConstructorInfo classConstructor = classType.GetConstructors().First();
             return classConstructor.GetParameters().Length;
         }
 
+         private static Type GetShapeTypeOf(string className)
+         {
+             return Assembly.GetAssembly(typeof(Shape)).GetTypes().Where(shapeType => shapeType.Name == className).First();
+         }
+
 
         public static Shape InstantiateWithArguments(string className, object[] args)
         {
-            Type classType = Type.GetType(className);
+
+            Type classType = GetShapeTypeOf(className);
             ConstructorInfo classConstructor = classType.GetConstructors().First();
             return (Shape)classConstructor.Invoke(args);
         }
@@ -77,7 +75,10 @@ namespace GrapeShapes
             Argument1.IsEnabled = true;
             Argument2.IsEnabled = (argCount > 1);
             Argument3.IsEnabled = (argCount > 2);
-            
+            Argument1.Text = "0";
+            Argument2.Text = "0";
+            Argument3.Text = "0";
+        
             // SOLUTION 1
             //if (argCount == 1)
             //{
@@ -95,70 +96,24 @@ namespace GrapeShapes
             //    Argument1.IsEnabled = true;
             //    Argument2.IsEnabled = true;
             //    Argument3.IsEnabled = true;
-            //}
-            
-            
+            //}   
         }
 
-
-        
-        // need to check the number of arguments
-        // if number of args is 3, do nothing
-        // if number of args is 2, disable box 3
-        // if number of args is 1, diable box 2 and 3
-        // on selection change maka all boxes enabled
-
-
-
-
-        private void DrawRectangle()
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Shapes.Polygon myPolygon = new System.Windows.Shapes.Polygon();
-            myPolygon.Stroke = System.Windows.Media.Brushes.Tomato;
-            myPolygon.Fill = System.Windows.Media.Brushes.Bisque;
-            myPolygon.StrokeThickness = 2;
-            myPolygon.HorizontalAlignment = HorizontalAlignment.Left;
-            myPolygon.VerticalAlignment = VerticalAlignment.Center;
-            System.Windows.Point Point1 = new System.Windows.Point(1, 50);
-            System.Windows.Point Point2 = new System.Windows.Point(1, 80);
-            System.Windows.Point Point4 = new System.Windows.Point(50, 80);
-            System.Windows.Point Point3 = new System.Windows.Point(50, 50);
-            PointCollection myPointCollection = new PointCollection();
-            myPointCollection.Add(Point1);
-            myPointCollection.Add(Point2);
-            myPointCollection.Add(Point3);
-            myPointCollection.Add(Point4);
-            myPolygon.Points = myPointCollection;
-            ShapeCanvas.Children.Add(myPolygon);
-        }
-        private void DrawSquare(int x, int y, Square square)
-        {
-            int squareSide = (int)square.Width;
+            // Retrieve correct number of arguments
+            string className = (String)ShapeType.SelectedValue;
+            
+            int argCount = ArgumentCountFor(className);
+            object[] potentialArgs = new object[] { Int32.Parse(Argument1.Text), Int32.Parse(Argument2.Text), Int32.Parse(Argument3.Text) };
+            // Create shape 
+            Shape shape = InstantiateWithArguments(className, potentialArgs.Take(argCount).ToArray());
+            // Draw shape
+            // DrawSquare(50, 50, shape as Square);
+            // GOAL: shape.DrawOnto(ShapeCanvas, 50, 50 );
+            shape.DrawOnto(ShapeCanvas, 50, 50);
 
-            SolidColorBrush mediaFillColor = new SolidColorBrush();
-            mediaFillColor.Color = System.Windows.Media.Color.FromArgb(square.FillColor.A, square.FillColor.R, square.FillColor.G, square.FillColor.B);
 
-            SolidColorBrush mediaBorderColor = new SolidColorBrush();
-            mediaBorderColor.Color = System.Windows.Media.Color.FromArgb(square.BorderColor.A, square.BorderColor.R, square.BorderColor.B, square.BorderColor.G);
-
-            System.Windows.Shapes.Polygon mySquare = new System.Windows.Shapes.Polygon();
-
-            mySquare.Stroke = mediaBorderColor;
-            mySquare.Fill = mediaFillColor;
-            mySquare.StrokeThickness = 2;
-            mySquare.HorizontalAlignment = HorizontalAlignment.Right;
-            mySquare.VerticalAlignment = VerticalAlignment.Center;
-            System.Windows.Point Point1 = new System.Windows.Point(x, y);
-            System.Windows.Point Point2 = new System.Windows.Point(x + squareSide, y);
-            System.Windows.Point Point3 = new System.Windows.Point(x + squareSide, y + squareSide);
-            System.Windows.Point Point4 = new System.Windows.Point(x, y + squareSide);
-            PointCollection myPointCollection = new PointCollection();
-            myPointCollection.Add(Point1);
-            myPointCollection.Add(Point2);
-            myPointCollection.Add(Point3);
-            myPointCollection.Add(Point4);
-            mySquare.Points = myPointCollection;
-            ShapeCanvas.Children.Add(mySquare);
         }
         
     }
